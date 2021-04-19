@@ -1,6 +1,8 @@
 package tests;
 
 import com.codeborne.selenide.Configuration;
+import config.DriverConfig;
+import org.aeonbits.owner.ConfigFactory;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byId;
@@ -10,14 +12,19 @@ import static com.codeborne.selenide.Selenide.open;
 import static io.qameta.allure.Allure.step;
 
 public class StudentRegistrationPage {
-
+    static DriverConfig driverConfig = ConfigFactory.create(DriverConfig.class);
 
     public void openPage() {
         step("Открытие формы регистрации студента", () -> {
-            String remoteWebDriver = System.getProperty("remote.web.driver");
+
+            String remoteWebDriver = System.getProperty("remote.web.driver", "");
+
             if(remoteWebDriver != null){
-                Configuration.remote = remoteWebDriver;
+                String user = driverConfig.remoteWebUser();
+                String password = driverConfig.remoteWebPassword();
+                Configuration.remote = String.format(remoteWebDriver, user, password);
             }
+
             open("https://demoqa.com/automation-practice-form");
             $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
         });
