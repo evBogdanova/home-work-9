@@ -15,6 +15,9 @@ public class TestBase {
     @BeforeAll
     static void setup() {
         Configuration.startMaximized = true;
+
+        Configuration.browser = (System.getProperty("web.browser", "chrome"));
+
         addListener("AllureSelenide", new AllureSelenide());
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("enableVNC", true);
