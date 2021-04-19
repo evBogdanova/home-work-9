@@ -1,5 +1,7 @@
 package tests;
 
+import com.codeborne.selenide.Configuration;
+
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byId;
 import static com.codeborne.selenide.Selectors.byText;
@@ -12,6 +14,10 @@ public class StudentRegistrationPage {
 
     public void openPage() {
         step("Открытие формы регистрации студента", () -> {
+            String remoteWebDriver = System.getProperty("remote.web.driver");
+            if(remoteWebDriver != null){
+                Configuration.remote = remoteWebDriver;
+            }
             open("https://demoqa.com/automation-practice-form");
             $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
         });
